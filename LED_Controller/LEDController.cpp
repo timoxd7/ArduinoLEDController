@@ -1,4 +1,4 @@
-#include "Arduino.h"
+#include <Arduino.h>
 #include "LEDController.h"
 
 LEDController::LEDController(int pinRed, int pinGreen, int pinBlue)

@@ -54,4 +54,8 @@
  *  !!!Has to be called min once per loop!!!
  *  If not, fade would be not funktional
  *  (just put it on the beginning of your loop, so you won't have any trouble)
+ * 
+ * 
+ * Private:
+ * 
  */

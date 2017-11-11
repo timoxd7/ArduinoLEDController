@@ -1,10 +1,10 @@
 /*
- * LEDController(int portRed, int portBlue, int portGreen);
+ * LEDController(int portRed, int portGreen, int portBlue);
  *  Init
  * 
  * LEDController.getRed();
- * LEDController.getBlue();
  * LEDController.getGreen();
+ * LEDController.getBlue();
  *  Returns the individual Color wert
  *  
  * LEDController.getRedFromEEPROM();

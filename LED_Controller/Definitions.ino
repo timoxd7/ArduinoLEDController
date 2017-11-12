@@ -26,7 +26,7 @@
  *  Pause fade and stop at the current color
  * LEDController.fadeStop();
  *  Returns to single color mode
- * LEDController.setFadeSpeed();
+ * LEDController.setFadeSpeed(float speed);
  *  Just edit Speed of the Fade (Fade will not be acticated throu this)
  * LEDController.getFadeSpeed();
  *  Get Speed of the Fade
@@ -50,7 +50,7 @@
  * LEDController.instantBabyblue();
  *  Show the named color instantly
  * 
- * LEDController.do();
+ * LEDController.work();
  *  !!!Has to be called min once per loop!!!
  *  If not, fade would be not funktional
  *  (just put it on the beginning of your loop, so you won't have any trouble)

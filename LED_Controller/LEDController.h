@@ -24,21 +24,27 @@ class LEDController
     void saveToEEPROM(float red, float green, float blue, float brightness);  //
     void saveToEEPROM(); //
     void saveCurrentToEEPROM(); //
-    void fade1(float speed);
-    void fade2(float speed);
-    void fadePause();
-    void fadeStop();
-    void setFadeSpeed(float speed);
-    float getFadeSpeed();
-    float getBrightness();
-    void setBrightness(float brightness);
-    void setRandomColor();
-    void setRandomBrightness();
+    void fade1(float speed); //
+    void fade1();
+    void fade2(float speed); //
+    void fade2();
+    void fadePause(); //
+    void fadePause(bool pause); //
+    void fadeStop(); //
+    void setFadeSpeed(float speed); //
+    float getFadeSpeed(); //
+    float getBrightness(); //
+    void setBrightness(float brightness); //
+    void setRandomColor(); //
+    void setRandomBrightness(); //
 
-    void work();
+    void fadeWork();
     
   private:
-    void writeColor(float red, float green, float blue, float brightness);
+    void writeColor();
+    float makeRight(float var);
+
+    float _resolution;
     
     struct _pin {
       int red, green, blue;
@@ -54,6 +60,12 @@ class LEDController
       float eepromRed, eepromGreen, eepromBlue, eepromBrightness;
       bool eepromRedRead, eepromGreenRead, eepromBlueRead, eepromBrightnessRead;
     } _current;
+
+    struct _fade {
+      float speed;
+      int mode;
+      bool active, pause;
+    } _fade;
 };
 
 #endif

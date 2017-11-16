@@ -37,12 +37,14 @@ class LEDController
     void setBrightness(float brightness); //
     void setRandomColor(); //
     void setRandomBrightness(); //
+    bool setResolution(float resolution);
 
     void fadeWork();
     
   private:
     void writeColor();
     float makeRight(float var);
+    void startFade();
 
     float _resolution;
     
@@ -63,7 +65,7 @@ class LEDController
 
     struct _fade {
       float speed;
-      int mode;
+      int mode, lastTime, fadeCount;
       bool active, pause;
     } _fade;
 };

@@ -224,10 +224,8 @@ void LEDController::fade1(float speed){
 
 void LEDController::fade1(){
   _fade.mode = 1;
-  _fade.active = true;
-  _fade.pause = false;
-
-  this->fadeWork();
+  
+  this->startFade();
 
   return;
 }
@@ -244,12 +242,19 @@ void LEDController::fade2(float speed){
 
 void LEDController::fade2(){
   _fade.mode = 2;
-  _fade.active = true;
-  _fade.pause = false;
 
-  this->fadeWork();
+  this->startFade();
 
   return;
+}
+
+
+void LEDController::startFade(){
+  _fade.active = true;
+  _fade.pause = false;
+  _fade.lastTime = millis();
+  
+  this->setColor(1, 1, 1);
 }
 
 
@@ -319,3 +324,26 @@ void LEDController::setRandomBrightness(){
   this->writeColor();
 }
 
+
+bool LEDController::setResolution(float resolution){
+  if(resolution > 0){
+    _resolution = resolution;
+
+    this->writeColor();
+    
+    return true;
+  }
+
+  return false;
+}
+
+
+void LEDController::fadeWork(){
+  if(_fade.mode = 1){
+    
+  }
+
+  if(_fade.mode = 2){
+    
+  }
+}

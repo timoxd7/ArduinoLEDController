@@ -245,7 +245,7 @@ void LEDController::fade2(float speed) {
 
 void LEDController::fade2() {
   _fade.mode = 2;
-  this->setColor(1, 0, 0);
+  this->setColor(1, 1, 0);
 
   this->startFade();
 
@@ -345,7 +345,8 @@ void LEDController::fadeWork() {
 
 
 void LEDController::doFade1() {
-  int finish = false;
+  bool finish = false;
+  
   while (!finish) {
     switch (_fade.count) {
       case 0:
@@ -407,6 +408,43 @@ void LEDController::doFade1() {
 
 
 void LEDController::doFade2() {
+  bool finish = false;
 
+  while(!finish){
+    switch(_fade.count){
+      case 0:
+        _current.blue += _fade.delta;
+        _current.red -= _fade.delta;
+        if(_current.blue >= 1.0 || _current.red <= 0){
+          _fade.delta = _current.blue - 1.0;
+          _current.blue = 1.0;
+          _current.red = 0;
+          _fade.count++;
+        } else finish = true;
+        break;
+
+      case 1:
+        _current.red += _fade.delta;
+        _current.green -= _fade.delta;
+        if(_current.red >= 1.0 || _current.green <= 0){
+          _fade.delta = _current.red - 1.0;
+          _current.red = 1.0;
+          _current.green = 0;
+          _fade.count++;
+        } else finish = true;
+        break;
+
+      case 2:
+        _current.green += _fade.delta;
+        _current.blue -= _fade.delta;
+        if(_current.green >= 1.0 || _current.blue <= 0){
+          _fade.delta = _current.green - 1.0;
+          _current.green = 1.0;
+          _current.blue = 0;
+          _fade.count = 0;
+        } else finish = true;
+        break;
+    }
+  }
 }
 

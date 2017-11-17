@@ -2,7 +2,7 @@
 #include <EEPROM.h>
 #include "LEDController.h"
 
-LEDController::LEDController(int pinRed, int pinGreen, int pinBlue){
+LEDController::LEDController(int pinRed, int pinGreen, int pinBlue) {
   pinMode(pinRed, OUTPUT);
   pinMode(pinGreen, OUTPUT);
   pinMode(pinBlue, OUTPUT);
@@ -31,7 +31,7 @@ LEDController::LEDController(int pinRed, int pinGreen, int pinBlue){
 }
 
 
-void LEDController::writeColor(){
+void LEDController::writeColor() {
   analogWrite(_pin.red, _current.red * _current.brightness * _resolution);
   analogWrite(_pin.green, _current.green * _current.brightness * _resolution);
   analogWrite(_pin.blue, _current.blue * _current.brightness * _resolution);
@@ -40,24 +40,24 @@ void LEDController::writeColor(){
 }
 
 
-float LEDController::getRed(){
+float LEDController::getRed() {
   return _current.red;
 }
 
 
-float LEDController::getGreen(){
+float LEDController::getGreen() {
   return _current.green;
 }
 
 
-float LEDController::getBlue(){
+float LEDController::getBlue() {
   return _current.blue;
 }
 
 
-bool LEDController::setEEPROMSlots(int slotRed, int slotGreen, int slotBlue, int slotBrightness){
-  if(slotRed >= 0 && slotGreen >= 0 && slotBlue >= 0 && slotBrightness >= 0){
-    if((slotRed != slotGreen && slotRed != slotBlue && slotRed != slotBrightness) && (slotGreen != slotBlue && slotGreen != slotBrightness) && (slotBlue != slotBrightness)){
+bool LEDController::setEEPROMSlots(int slotRed, int slotGreen, int slotBlue, int slotBrightness) {
+  if (slotRed >= 0 && slotGreen >= 0 && slotBlue >= 0 && slotBrightness >= 0) {
+    if ((slotRed != slotGreen && slotRed != slotBlue && slotRed != slotBrightness) && (slotGreen != slotBlue && slotGreen != slotBrightness) && (slotBlue != slotBrightness)) {
       _slot.red = slotRed;
       _slot.green = slotGreen;
       _slot.blue = slotBlue;
@@ -68,30 +68,30 @@ bool LEDController::setEEPROMSlots(int slotRed, int slotGreen, int slotBlue, int
       return _slot.set;
     }
   }
-    
+
   _slot.set = false;
   return _slot.set;
 }
 
 
-int LEDController::getEEPROMSlotRed(){
+int LEDController::getEEPROMSlotRed() {
   if (_slot.set) return _slot.red; else return -1;
 }
 
 
-int LEDController::getEEPROMSlotGreen(){
+int LEDController::getEEPROMSlotGreen() {
   if (_slot.set) return _slot.green; else return -1;
 }
 
 
-int LEDController::getEEPROMSlotBlue(){
+int LEDController::getEEPROMSlotBlue() {
   if (_slot.set) return _slot.blue; else return -1;
 }
 
 
-float LEDController::getRedFromEEPROM(){
+float LEDController::getRedFromEEPROM() {
   if (_current.eepromRedRead) return _current.eepromRed;
-  if (_slot.set){
+  if (_slot.set) {
     EEPROM.get(_slot.red, _current.eepromRed);
     _current.eepromRedRead = true;
     return _current.eepromRed;
@@ -101,9 +101,9 @@ float LEDController::getRedFromEEPROM(){
 }
 
 
-float LEDController::getGreenFromEEPROM(){
+float LEDController::getGreenFromEEPROM() {
   if (_current.eepromGreenRead) return _current.eepromGreen;
-  if (_slot.set){
+  if (_slot.set) {
     EEPROM.get(_slot.green, _current.eepromGreen);
     _current.eepromGreenRead = true;
     return _current.eepromGreen;
@@ -113,9 +113,9 @@ float LEDController::getGreenFromEEPROM(){
 }
 
 
-float LEDController::getBlueFromEEPROM(){
+float LEDController::getBlueFromEEPROM() {
   if (_current.eepromBlueRead) return _current.eepromBlue;
-  if (_slot.set){
+  if (_slot.set) {
     EEPROM.get(_slot.blue, _current.eepromBlue);
     _current.eepromBlueRead = true;
     return _current.eepromBlue;
@@ -125,9 +125,9 @@ float LEDController::getBlueFromEEPROM(){
 }
 
 
-float LEDController::getBrightnessFromEEPROM(){
+float LEDController::getBrightnessFromEEPROM() {
   if (_current.eepromBrightnessRead) return _current.eepromBrightness;
-  if (_slot.set){
+  if (_slot.set) {
     EEPROM.get(_slot.brightness, _current.eepromBrightness);
     _current.eepromBrightnessRead = true;
     return _current.eepromBrightness;
@@ -137,8 +137,8 @@ float LEDController::getBrightnessFromEEPROM(){
 }
 
 
-bool LEDController::forceReloadFromEEPROM(){
-  if(_slot.set){
+bool LEDController::forceReloadFromEEPROM() {
+  if (_slot.set) {
     EEPROM.get(_slot.red, _current.eepromRed);
     _current.eepromRedRead = true;
 
@@ -158,10 +158,12 @@ bool LEDController::forceReloadFromEEPROM(){
 }
 
 
-void LEDController::setColor(float red, float green, float blue){
+void LEDController::setColor(float red, float green, float blue) {
   _current.red = this->makeRight(red);
   _current.green = this->makeRight(green);
   _current.blue = this->makeRight(blue);
+
+  if (_fade.active) _fade.active = false;
 
   this->writeColor();
 
@@ -169,27 +171,27 @@ void LEDController::setColor(float red, float green, float blue){
 }
 
 
-void LEDController::setColor(float red, float green, float blue, float brightness){
+void LEDController::setColor(float red, float green, float blue, float brightness) {
   _current.brightness = this->makeRight(brightness);
-  
+
   this->setColor(red, green, blue);
 
   return;
 }
 
 
-bool LEDController::setFromEEPROM(){
-  if(this->getRedFromEEPROM() == -1) return false;
-  if(this->getGreenFromEEPROM() == -1) return false;
-  if(this->getBlueFromEEPROM() == -1) return false;
-  if(this->getBrightnessFromEEPROM() == -1) return false;
+bool LEDController::setFromEEPROM() {
+  if (this->getRedFromEEPROM() == -1) return false;
+  if (this->getGreenFromEEPROM() == -1) return false;
+  if (this->getBlueFromEEPROM() == -1) return false;
+  if (this->getBrightnessFromEEPROM() == -1) return false;
 
   this->setColor(_current.eepromRed, _current.eepromGreen, _current.eepromBlue, _current.eepromBrightness);
   return true;
 }
 
 
-void LEDController::saveToEEPROM(float red, float green, float blue, float brightness){
+void LEDController::saveToEEPROM(float red, float green, float blue, float brightness) {
   EEPROM.put(_slot.red, red);
   EEPROM.put(_slot.green, green);
   EEPROM.put(_slot.blue, blue);
@@ -199,40 +201,41 @@ void LEDController::saveToEEPROM(float red, float green, float blue, float brigh
 }
 
 
-void LEDController::saveCurrentToEEPROM(){
+void LEDController::saveCurrentToEEPROM() {
   this->saveToEEPROM(_current.red, _current.green, _current.blue, _current.brightness);
 
   return;
 }
 
 
-void LEDController::saveToEEPROM(){
+void LEDController::saveToEEPROM() {
   this->saveCurrentToEEPROM();
 
   return;
 }
 
 
-void LEDController::fade1(float speed){
-  _fade.speed = speed;
-  
+void LEDController::fade1(float speed) {
+  this->setFadeSpeed(speed);
+
   this->fade1();
 
   return;
 }
 
 
-void LEDController::fade1(){
+void LEDController::fade1() {
   _fade.mode = 1;
-  
+  this->setColor(1, 0, 0);
+
   this->startFade();
 
   return;
 }
 
 
-void LEDController::fade2(float speed){
-  _fade.speed = speed;
+void LEDController::fade2(float speed) {
+  this->setFadeSpeed(speed);
 
   this->fade2();
 
@@ -240,8 +243,9 @@ void LEDController::fade2(float speed){
 }
 
 
-void LEDController::fade2(){
+void LEDController::fade2() {
   _fade.mode = 2;
+  this->setColor(1, 0, 0);
 
   this->startFade();
 
@@ -249,75 +253,58 @@ void LEDController::fade2(){
 }
 
 
-void LEDController::startFade(){
-  _fade.active = true;
-  _fade.pause = false;
+void LEDController::startFade() {
   _fade.lastTime = millis();
-  
-  this->setColor(1, 1, 1);
+  _fade.count = 0;
 }
 
 
-void LEDController::fadePause(){
-  this->fadePause(true);
-
-  return;
-}
-
-
-void LEDController::fadePause(bool pause){
-  if(_fade.active) _fade.pause = true;
-
-  return;
-}
-
-
-void LEDController::fadeStop(){
+void LEDController::fadeStop() {
   _fade.active = false;
 
   return;
 }
 
 
-void LEDController::setFadeSpeed(float speed){
-  _fade.speed = speed;
+void LEDController::setFadeSpeed(float speed) {
+  if (speed > 0) _fade.speed = speed;
 
   return;
 }
 
 
-float LEDController::getFadeSpeed(){
+float LEDController::getFadeSpeed() {
   return _fade.speed;
 }
 
 
-float LEDController::getBrightness(){
+float LEDController::getBrightness() {
   return _current.brightness;
 }
 
 
-void LEDController::setBrightness(float brightness){
+void LEDController::setBrightness(float brightness) {
   _current.brightness = this->makeRight(brightness);
 
   return;
 }
 
 
-void LEDController::setRandomColor(){
+void LEDController::setRandomColor() {
   randomSeed(micros());
   _current.red = random(0, 1000) / 1000.0;
-  
-  randomSeed(micros()+1);
+
+  randomSeed(micros() + 1);
   _current.green = random(0, 1000) / 1000.0;
-  
-  randomSeed(micros()+2);
+
+  randomSeed(micros() + 2);
   _current.blue = random(0, 1000) / 1000.0;
 
   this->writeColor();
 }
 
 
-void LEDController::setRandomBrightness(){
+void LEDController::setRandomBrightness() {
   randomSeed(micros());
   _current.brightness = random(0, 1000) / 1000.0;
 
@@ -325,12 +312,12 @@ void LEDController::setRandomBrightness(){
 }
 
 
-bool LEDController::setResolution(float resolution){
-  if(resolution > 0){
+bool LEDController::setResolution(float resolution) {
+  if (resolution > 0) {
     _resolution = resolution;
 
     this->writeColor();
-    
+
     return true;
   }
 
@@ -338,12 +325,88 @@ bool LEDController::setResolution(float resolution){
 }
 
 
-void LEDController::fadeWork(){
-  if(_fade.mode = 1){
-    
-  }
+void LEDController::fadeWork() {
+  if (_fade.active) {
+    _fade.deltaTime = millis() - _fade.lastTime;
+    _fade.lastTime += _fade.deltaTime;
+    _fade.delta = _fade.deltaTime * _fade.speed;
 
-  if(_fade.mode = 2){
-    
+    if (_fade.mode = 1) {
+      this->doFade1();
+      this->writeColor();
+    }
+
+    if (_fade.mode = 2) {
+      this->doFade2();
+      this->writeColor();
+    }
   }
 }
+
+
+void LEDController::doFade1() {
+  int finish = false;
+  while (!finish) {
+    switch (_fade.count) {
+      case 0:
+        _current.green += _fade.delta;
+        if (_current.green >= 1.0) {
+          _fade.delta = _current.green - 1.0;
+          _current.green = 1.0;
+          _fade.count++;
+        } else finish = true;
+        break;
+
+      case 1:
+        _current.red -= _fade.delta;
+        if (_current.red <= 0) {
+          _fade.delta = _current.red * -1.0;
+          _current.red = 0;
+          _fade.count++;
+        } else finish = true;
+        break;
+
+      case 2:
+        _current.blue += _fade.delta;
+        if (_current.blue >= 1.0) {
+          _fade.delta = _current.blue - 1.0;
+          _current.blue = 1.0;
+          _fade.count++;
+        } else finish = true;
+        break;
+
+      case 3:
+        _current.green -= _fade.delta;
+        if (_current.green <= 0) {
+          _fade.delta = _current.green * -1.0;
+          _current.green = 0;
+          _fade.count++;
+        } else finish = true;
+        break;
+
+      case 4:
+        _current.red += _fade.delta;
+        if (_current.red >= 1.0) {
+          _fade.delta = _current.red - 1.0;
+          _current.red = 1.0;
+          _fade.count++;
+        } else finish = true;
+        break;
+
+      case 5:
+        _current.blue -= _fade.delta;
+        if (_current.blue <= 0) {
+          _fade.delta = _current.blue * -1.0;
+          _current.blue = 0;
+          _fade.count = 0;
+        } else finish = true;
+        break;
+    }
+  }
+}
+
+
+void LEDController::doFade2() {
+
+}
+

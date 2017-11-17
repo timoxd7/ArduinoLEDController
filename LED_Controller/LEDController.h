@@ -36,6 +36,7 @@ class LEDController
     void setRandomColor(); //
     void setRandomBrightness(); //
     bool setResolution(float resolution); //
+    void randomFade();
 
     void fadeWork();
 

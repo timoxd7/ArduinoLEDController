@@ -63,6 +63,11 @@ bool LEDController::setEEPROMSlots(int slotRed, int slotGreen, int slotBlue, int
       _slot.blue = slotBlue;
       _slot.brightness = slotBrightness;
 
+      _current.eepromRedRead = false;
+      _current.eepromGreenRead = false;
+      _current.eepromBlueRead = false;
+      _current.eepromBrightnessRead = false;
+
       _slot.set = true;
 
       return _slot.set;
@@ -447,4 +452,3 @@ void LEDController::doFade2() {
     }
   }
 }
-
